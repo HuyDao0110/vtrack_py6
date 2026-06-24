@@ -1,25 +1,17 @@
 import streamlit as st
 
-# --- 1. CẤU HÌNH ĐƯỜNG DẪN GITHUB (Chỉ khai báo 1 lần duy nhất ở đầu) ---
-GITHUB_BASE = "https://raw.githubusercontent.com/huy15102004/Ytrack_image/main/"
-
-# Hàm rút gọn để "chỉ đích danh" tên file
-def get_img(file_name):
-    return GITHUB_BASE + file_name
-
-
 # --- CẤU HÌNH TRANG WEB ---
-st.set_page_config(page_title="YTrack - Nghe Nhạc Việt", layout="wide")
+st.set_page_config(page_title="YTrack", layout="wide")
 
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
-# --- 2. THANH ĐIỀU HƯỚNG ---
+# --- 1. THANH ĐIỀU HƯỚNG ---
 nav = st.columns([2, 4, 2, 2])
 
 with nav[0]:
-    # Chỉ đích danh 'logo.png' thông qua hàm get_img
-    st.image(get_img("logo.png"), width=110)
+    # Nêu trực tiếp tên file ảnh local
+    st.image("logo.png", width=110)
 
 with nav[1]:
     st.text_input("Tìm kiếm...", label_visibility="collapsed")
@@ -36,12 +28,12 @@ with nav[3]:
 
 st.write("---")
 
-# --- 3. QUẢN LÝ TRANG ---
+# --- 2. QUẢN LÝ CÁC TRANG ---
 if st.session_state.page == "Home":
     st.write("# Nghe gì hôm nay, User?")
     
-    # Chỉ đích danh 'best_notification.png'
-    st.image(get_img("best_notification.png"), use_container_width=True)
+    # Nêu trực tiếp tên file ảnh banner
+    st.image("best_notification.png", use_container_width=True)
 
     # --- NGHỆ SĨ PHỔ BIẾN ---
     st.write("## Nghệ sĩ phổ biến")
@@ -53,10 +45,9 @@ if st.session_state.page == "Home":
         ("Trang Pháp", "A04trang_phap.jpg"),
         ("Xem thêm", "A05more.png")
     ]
-    for i, (name, file) in enumerate(artists):
+    for i, (name, file_name) in enumerate(artists):
         with art_cols[i]:
-            # Gọi trực tiếp tên file lấy từ danh sách
-            st.image(get_img(file), width=140)
+            st.image(file_name, width=140)
             if st.button(name, key=f"art_{i}", use_container_width=True):
                 if name == "Trang Pháp": st.session_state.page = "Nghệ sĩ"
 
@@ -68,17 +59,15 @@ if st.session_state.page == "Home":
         "B03danh_doi.jpg", "B04bat_no_len.jpg", 
         "B05tung_ngay_nhu_mai_mai.jpg", "B06more.png"
     ]
-    for i, file in enumerate(albums):
+    for i, file_name in enumerate(albums):
         with alb_cols[i]:
-            # Chỉ đích danh file album
-            st.image(get_img(file), width=130)
+            st.image(file_name, width=130)
 
-    # --- BXH BÀI HÁT NỔI BẬT ---
+    # --- BXH BÀI HÁT NỔI BẬT THÁNG NÀY ---
     st.write("## BXH bài hát nổi bật *Tháng này*")
     bxh_l, bxh_r = st.columns([4, 6])
     with bxh_l:
-        # Chỉ đích danh 'come_my_way.jpg'
-        st.image(get_img("come_my_way.jpg"), width=320)
+        st.image("come_my_way.jpg", width=320)
             
     with bxh_r:
         songs = [
@@ -97,8 +86,11 @@ elif st.session_state.page == "Nghệ sĩ":
     st.write("---")
     l, r = st.columns([4, 6])
     with l:
-        # Chỉ đích danh 'trang_phap.jpg' ở trang chi tiết
-        st.image(get_img("trang_phap.jpg"), width=350)
+        st.image("trang_phap.jpg", width=350)
     with r:
         st.write("# Trang Pháp và hành trình")
         st.write("▶ Phát tất cả | 7 bài hát")
+
+elif st.session_state.page == "Thư viện":
+    st.image("thu_vien_yeu_thich.png", use_container_width=True)
+    if st.button("Trở về"): st.session_state.page = "Home"
