@@ -6,11 +6,13 @@ st.set_page_config(page_title="YTrack - Ứng dụng nghe nhạc", layout="wide"
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
-# --- 1. THANH ĐIỀU HƯỚNG ---
-nav = st.columns([2, 4, 2, 2])
+# --- 1. THANH ĐIỀU HƯỚNG (Thu gọn chiều dọc, kéo giãn chiều ngang) ---
+# Thay đổi tỷ lệ cột để thanh tìm kiếm rộng hơn và các nút sát nhau hơn
+nav = st.columns([1.5, 5, 2, 2])
 
 with nav[0]:
-    st.image("logo.png", width=130) # Logo góc trái
+    # Thu nhỏ logo một chút để không làm phình thanh menu
+    st.image("logo.png", width=90) 
 
 with nav[1]:
     st.text_input("Tìm kiếm...", label_visibility="collapsed")
@@ -31,10 +33,9 @@ st.write("---")
 if st.session_state.page == "Home":
     st.write("# Nghe gì hôm nay, User?")
     
-    # Banner lớn chạy ngang màn hình
     st.image("best_notification.png", use_container_width=True)
 
-    # --- NGHỆ SĨ PHỔ BIẾN ---
+    # --- NGHỆ SĨ PHỔ BIẾN (Bỏ fixed width, dùng use_container_width để ảnh to hết cỡ cột) ---
     st.write("## Nghệ sĩ phổ biến")
     art_cols = st.columns(5)
     artists = [
@@ -46,8 +47,8 @@ if st.session_state.page == "Home":
     ]
     for i, (name, file_name) in enumerate(artists):
         with art_cols[i]:
-            # Đã phóng to ảnh lên width=200 và dùng caption hiển thị tên ngay dưới ảnh gọn gàng
-            st.image(file_name, caption=name, width=200)
+            # Đổi từ width=200 sang use_container_width=True để ảnh tự to ra bằng độ rộng của cột
+            st.image(file_name, caption=name, use_container_width=True)
 
     # --- ALBUM NỔI BẬT ---
     st.write("## Album nổi bật")
@@ -59,14 +60,14 @@ if st.session_state.page == "Home":
     ]
     for i, file_name in enumerate(albums):
         with alb_cols[i]:
-            # Phóng to ảnh bìa Album lên width=180
-            st.image(file_name, width=180)
+            # Ảnh album tự động to đều theo khung màn hình
+            st.image(file_name, use_container_width=True)
 
     # --- BXH BÀI HÁT NỔI BẬT THÁNG NÀY ---
     st.write("## BXH bài hát nổi bật *Tháng này*")
-    bxh_l, bxh_r = st.columns([4, 6])
+    bxh_l, bxh_r = st.columns([3, 7]) # Điều chỉnh lại tỷ lệ để phần danh sách bài hát rộng rãi hơn
     with bxh_l:
-        st.image("come_my_way.png", width=360) # Ảnh bìa bài hát BXH lớn, rõ nét
+        st.image("come_my_way.png", use_container_width=True)
             
     with bxh_r:
         songs = [
@@ -85,7 +86,7 @@ elif st.session_state.page == "Nghệ sĩ":
     st.write("---")
     l, r = st.columns([4, 6])
     with l:
-        st.image("A04trang_phap.png", width=400)
+        st.image("A04trang_phap.png", use_container_width=True)
     with r:
         st.write("# Trang Pháp và hành trình")
         st.write("▶ Phát tất cả | 7 bài hát")
