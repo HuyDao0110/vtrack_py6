@@ -6,25 +6,28 @@ st.set_page_config(page_title="YTrack", layout="wide")
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
+# Hàm chuyển trang khi bấm vào ảnh
+def chuyển_trang(ten_trang):
+    st.session_state.page = ten_trang
+
 # --- 1. THANH ĐIỀU HƯỚNG ---
 nav = st.columns([2, 4, 2, 2])
 
 with nav[0]:
-    # Gọi trực tiếp file ảnh ở thư mục gốc
-    st.image("logo.png", width=110)
+    st.image("logo.png", width=120)
 
 with nav[1]:
     st.text_input("Tìm kiếm...", label_visibility="collapsed")
 
 with nav[2]:
     c1, c2 = st.columns(2)
-    if c1.button("🏠 Home", use_container_width=True): st.session_state.page = "Home"
-    if c2.button("📚 Thư viện", use_container_width=True): st.session_state.page = "Thư viện"
+    if c1.button("🏠 Home", use_container_width=True): chuyển_trang("Home")
+    if c2.button("📚 Thư viện", use_container_width=True): chuyển_trang("Thư viện")
 
 with nav[3]:
     c3, c4 = st.columns(2)
-    if c3.button("Đăng nhập", use_container_width=True): st.session_state.page = "Đăng nhập"
-    if c4.button("Đăng ký", use_container_width=True): st.session_state.page = "Đăng ký"
+    if c3.button("Đăng nhập", use_container_width=True): chuyển_trang("Đăng nhập")
+    if c4.button("Đăng ký", use_container_width=True): chuyển_trang("Đăng ký")
 
 st.write("---")
 
@@ -32,26 +35,30 @@ st.write("---")
 if st.session_state.page == "Home":
     st.write("# Nghe gì hôm nay, User?")
     
-    # Sửa lại đúng đuôi .png theo GitHub của bạn
     st.image("best_notification.png", use_container_width=True)
 
-    # --- NGHỆ SĨ PHỔ BIẾN (Tất cả đổi thành .png) ---
+    # --- NGHỆ SĨ PHỔ BIẾN (Ảnh to hơn + Tự thành nút bấm) ---
     st.write("## Nghệ sĩ phổ biến")
     art_cols = st.columns(5)
     artists = [
-        ("Sơn Tùng M-TP", "A01son_tung.png"),
-        ("SOOBIN", "A02soobin.png"),
-        ("bùi trường linh", "A03buitruonglinh.png"),
-        ("Trang Pháp", "A04trang_phap.png"),
-        ("Xem thêm", "A05more.png")
+        ("Sơn Tùng M-TP", "A01son_tung.png", "Home"),
+        ("SOOBIN", "A02soobin.png", "Home"),
+        ("bùi trường linh", "A03buitruonglinh.png", "Home"),
+        ("Trang Pháp", "A04trang_phap.png", "Nghệ sĩ"), # Bấm vào ảnh Trang Pháp sẽ chuyển sang trang Nghệ sĩ
+        ("Xem thêm", "A05more.png", "Home")
     ]
-    for i, (name, file_name) in enumerate(artists):
+    for i, (name, file_name, target_page) in enumerate(artists):
         with art_cols[i]:
-            st.image(file_name, width=140)
-            if st.button(name, key=f"art_{i}", use_container_width=True):
-                if name == "Trang Pháp": st.session_state.page = "Nghệ sĩ"
+            # Đã bỏ nút bấm phụ. Ảnh được phóng to lên width=200 và tích hợp on_click
+            st.image(
+                file_name, 
+                caption=name, 
+                width=200, 
+                on_click=chuyển_trang, 
+                args=(target_page,)
+            )
 
-    # --- ALBUM NỔI BẬT (Tất cả đổi thành .png) ---
+    # --- ALBUM NỔI BẬT (Ảnh to hơn) ---
     st.write("## Album nổi bật")
     alb_cols = st.columns(6)
     albums = [
@@ -61,13 +68,14 @@ if st.session_state.page == "Home":
     ]
     for i, file_name in enumerate(albums):
         with alb_cols[i]:
-            st.image(file_name, width=130)
+            # Phóng to ảnh album lên width=180
+            st.image(file_name, width=180)
 
     # --- BXH BÀI HÁT NỔI BẬT THÁNG NÀY ---
     st.write("## BXH bài hát nổi bật *Tháng này*")
     bxh_l, bxh_r = st.columns([4, 6])
     with bxh_l:
-        st.image("come_my_way.png", width=320)
+        st.image("come_my_way.png", width=360) # Tăng kích thước ảnh bìa BXH
             
     with bxh_r:
         songs = [
@@ -82,16 +90,15 @@ if st.session_state.page == "Home":
             sr.write(f"**{s['artist']}**")
 
 elif st.session_state.page == "Nghệ sĩ":
-    if st.button("⬅ Quay lại"): st.session_state.page = "Home"
+    if st.button("⬅ Quay lại"): chuyển_trang("Home")
     st.write("---")
     l, r = st.columns([4, 6])
     with l:
-        # Sửa lại đúng file ảnh Trang Pháp ở thư mục gốc
-        st.image("A04trang_phap.png", width=350)
+        st.image("A04trang_phap.png", width=400)
     with r:
         st.write("# Trang Pháp và hành trình")
         st.write("▶ Phát tất cả | 7 bài hát")
 
 elif st.session_state.page == "Thư viện":
     st.image("thu_vien_yeu_thich.png", use_container_width=True)
-    if st.button("Trở về"): st.session_state.page = "Home"
+    if st.button("Trở về"): chuyển_trang("Home")
