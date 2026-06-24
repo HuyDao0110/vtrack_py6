@@ -10,7 +10,7 @@ if "page" not in st.session_state:
 nav = st.columns([2, 4, 2, 2])
 
 with nav[0]:
-    # Nêu trực tiếp tên file ảnh local
+    # Gọi trực tiếp file ảnh ở thư mục gốc
     st.image("logo.png", width=110)
 
 with nav[1]:
@@ -32,17 +32,17 @@ st.write("---")
 if st.session_state.page == "Home":
     st.write("# Nghe gì hôm nay, User?")
     
-    # Nêu trực tiếp tên file ảnh banner
+    # Sửa lại đúng đuôi .png theo GitHub của bạn
     st.image("best_notification.png", use_container_width=True)
 
-    # --- NGHỆ SĨ PHỔ BIẾN ---
+    # --- NGHỆ SĨ PHỔ BIẾN (Tất cả đổi thành .png) ---
     st.write("## Nghệ sĩ phổ biến")
     art_cols = st.columns(5)
     artists = [
-        ("Sơn Tùng M-TP", "A01son_tung.jpg"),
-        ("SOOBIN", "A02soobin.jpg"),
+        ("Sơn Tùng M-TP", "A01son_tung.png"),
+        ("SOOBIN", "A02soobin.png"),
         ("bùi trường linh", "A03buitruonglinh.png"),
-        ("Trang Pháp", "A04trang_phap.jpg"),
+        ("Trang Pháp", "A04trang_phap.png"),
         ("Xem thêm", "A05more.png")
     ]
     for i, (name, file_name) in enumerate(artists):
@@ -51,13 +51,13 @@ if st.session_state.page == "Home":
             if st.button(name, key=f"art_{i}", use_container_width=True):
                 if name == "Trang Pháp": st.session_state.page = "Nghệ sĩ"
 
-    # --- ALBUM NỔI BẬT ---
+    # --- ALBUM NỔI BẬT (Tất cả đổi thành .png) ---
     st.write("## Album nổi bật")
     alb_cols = st.columns(6)
     albums = [
-        "B01mtp_mtp.jpg", "B02ai_cung_phai_bat_dau_tu_dau_do.jpg", 
-        "B03danh_doi.jpg", "B04bat_no_len.jpg", 
-        "B05tung_ngay_nhu_mai_mai.jpg", "B06more.png"
+        "B01mtp_mtp.png", "B02ai_cung_phai_bat_dau_tu_dau_do.png", 
+        "B03danh_doi.png", "B04bat_no_len.png", 
+        "B05tung_ngay_nhu_mai_mai.png", "B06more.png"
     ]
     for i, file_name in enumerate(albums):
         with alb_cols[i]:
@@ -67,7 +67,7 @@ if st.session_state.page == "Home":
     st.write("## BXH bài hát nổi bật *Tháng này*")
     bxh_l, bxh_r = st.columns([4, 6])
     with bxh_l:
-        st.image("come_my_way.jpg", width=320)
+        st.image("come_my_way.png", width=320)
             
     with bxh_r:
         songs = [
@@ -86,7 +86,8 @@ elif st.session_state.page == "Nghệ sĩ":
     st.write("---")
     l, r = st.columns([4, 6])
     with l:
-        st.image("trang_phap.jpg", width=350)
+        # Sửa lại đúng file ảnh Trang Pháp ở thư mục gốc
+        st.image("A04trang_phap.png", width=350)
     with r:
         st.write("# Trang Pháp và hành trình")
         st.write("▶ Phát tất cả | 7 bài hát")
